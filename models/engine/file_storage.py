@@ -20,6 +20,16 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
+    def delete(self, obj=None):
+        """deletes given object
+        """
+        if not obj:
+            return
+        key = "{}.{}".format(type(obj).__name__, obj.id)
+        if key in self.__objects:
+            del self.__objects[key]
+            self.save()
+    
     def all(self, cls=None):
         """returns a dictionary
         Return:
@@ -61,13 +71,3 @@ class FileStorage:
         def close(self):
             """storage trace"""
             self.reload()
-
-        def delete(self, obj=None):
-        """deletes given object
-        """
-        if not obj:
-            return
-        key = "{}.{}".format(type(obj).__name__, obj.id)
-        if key in self.__objects:
-            del self.__objects[key]
-            self.save()
