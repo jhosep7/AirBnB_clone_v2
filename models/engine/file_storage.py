@@ -61,3 +61,13 @@ class FileStorage:
         def close(self):
             """storage trace"""
             self.reload()
+
+        def delete(self, obj=None):
+        """deletes given object
+        """
+        if not obj:
+            return
+        key = "{}.{}".format(type(obj).__name__, obj.id)
+        if key in self.__objects:
+            del self.__objects[key]
+            self.save()
