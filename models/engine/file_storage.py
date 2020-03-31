@@ -20,18 +20,10 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def delete(self, obj=None):
-        """deletes a given object
-        """
-        if not obj:
-            return
-        k = "{}.{}".format(type(obj).__name__, obj.id)
-        if k in self.__objects:
-            del self.__objects[k]
-            self.save()
-            
     def all(self, cls=None):
-        """Returns a dictionary made of __object
+        """returns a dictionary
+        Return:
+            returns a dictionary of __object
         """
         if not cls:
             return self.__objects
@@ -65,7 +57,7 @@ class FileStorage:
                     self.__objects[key] = value
         except FileNotFoundError:
             pass
-
-    def close(self):
-        """Thread specific storage"""
-        self.reload()
+        
+        def close(self):
+            """storage trace"""
+            self.reload()

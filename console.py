@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This is the console for AirBnB"""
 import cmd
+import re
 from models import storage
 from datetime import datetime
 from models.base_model import BaseModel
@@ -42,7 +43,28 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-            obj = eval("{}()".format(my_list[0]))            
+            obj = eval("{}()".format(my_list[0]))
+            for pair in my_list[1:]:
+                pair = pair.split('=', 1)
+                if len(pair) == 1 or "" in pair:
+                    continue
+                match = re.search('^"(.*)"$', pair[1])
+                cast = str
+                if match:
+                    value = match.group(1)
+                    value = value.replace('_', ' ')
+                    value = re.sub(r'(?<!\\)"', r'\\"', value)
+                else:
+                    value = pair[1]
+                    if "." in value:
+                        cast = float
+                    else:
+                        cast = int
+                try:
+                    value = cast(value)
+                except ValueError:
+                    pass
+                setattr(obj, pair[0], value)
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
