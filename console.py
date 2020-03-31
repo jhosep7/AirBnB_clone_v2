@@ -50,16 +50,16 @@ class HBNBCommand(cmd.Cmd):
                     continue
                 couple = re.search('^"(.*)"$', i[1])
                 convert = str
-                if couple:
-                    Num = couple.group(1)
-                    Num = Num.replace('_', ' ')
-                    Num = re.sub(r'(?<!\\)"', r'\\"', Num)
-                else:
+                if not couple:
                     Num = i[1]
                     if "." in Num:
                         convert = float
                     else:
                         convert = int
+                else:
+                    Num = couple.group(1)
+                    Num = Num.replace('_', ' ')
+                    Num = re.sub(r'(?<!\\)"', r'\\"', Num)
                 try:
                     Num = convert(Num)
                 except ValueError:
