@@ -25,9 +25,9 @@ class FileStorage:
         """
         if not obj:
             return
-        key = "{}.{}".format(type(obj).__name__, obj.id)
-        if key in self.__objects:
-            del self.__objects[key]
+        k = "{}.{}".format(type(obj).__name__, obj.id)
+        if k in self.__objects:
+            del self.__objects[k]
             self.save()
     
     def all(self, cls=None):
