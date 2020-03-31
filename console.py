@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """This is the console for AirBnB"""
 import cmd
-import re
 from models import storage
 from datetime import datetime
 from models.base_model import BaseModel
@@ -12,6 +11,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from shlex import split
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -44,27 +44,27 @@ class HBNBCommand(cmd.Cmd):
                 raise SyntaxError()
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
-            for pair in my_list[1:]:
-                pair = pair.split('=', 1)
-                if len(pair) == 1 or "" in pair:
+            for i in my_list[1:]:
+                i = i.split('=', 1)
+                if len(i) == 1 or "" in i:
                     continue
-                match = re.search('^"(.*)"$', pair[1])
-                cast = str
-                if match:
-                    value = match.group(1)
-                    value = value.replace('_', ' ')
-                    value = re.sub(r'(?<!\\)"', r'\\"', value)
+                couple = re.search('^"(.*)"$', i[1])
+                convert = str
+                if couple:
+                    Num = couple.group(1)
+                    Num = Num.replace('_', ' ')
+                    Num = re.sub(r'(?<!\\)"', r'\\"', Num)
                 else:
-                    value = pair[1]
-                    if "." in value:
-                        cast = float
+                    Num = i[1]
+                    if "." in Num:
+                        convert = float
                     else:
-                        cast = int
+                        convert = int
                 try:
-                    value = cast(value)
+                    Num = convert(Num)
                 except ValueError:
                     pass
-                setattr(obj, pair[0], value)
+                setattr(obj, i[0], Num)
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
