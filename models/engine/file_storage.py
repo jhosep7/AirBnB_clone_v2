@@ -29,7 +29,7 @@ class FileStorage:
         if k in self.__objects:
             del self.__objects[k]
             self.save()
-    
+
     def all(self, cls=None):
         """returns a dictionary
         Return:
@@ -67,7 +67,7 @@ class FileStorage:
                     self.__objects[key] = value
         except FileNotFoundError:
             pass
-        
+
         def close(self):
             """storage trace"""
             self.reload()
