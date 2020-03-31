@@ -42,7 +42,6 @@ class BaseModel:
         else:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
-            models.storage.new(self)#pending
             
     def __str__(self):
         """returns a string
@@ -76,3 +75,6 @@ class BaseModel:
         if "_sa_instance_state" in my_dict:
             del my_dict["_sa_instance_state"]
         return my_dict
+    def delete(self):
+        """deletes instance from models.storage"""
+        models.storage.delete(self)
