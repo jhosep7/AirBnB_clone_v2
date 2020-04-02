@@ -71,6 +71,14 @@ class TestUser(unittest.TestCase):
         """test if dictionary works"""
         self.assertEqual('to_dict' in dir(self.user), True)
 
+    def test_user_func_docstring(self):
+        """Checking for docstrings in User methods"""
+        for func in self.user_f:
+            self.assertIsNot(func[1].__doc__, None,
+                             "{:s} method needs a docstring".format(func[0]))
+            self.assertTrue(len(func[1].__doc__) >= 1,
+                            "{:s} method needs a docstring".format(func[0]))
+
 
 if __name__ == "__main__":
     unittest.main()
