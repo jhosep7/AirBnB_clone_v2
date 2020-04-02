@@ -79,6 +79,19 @@ class TestUser(unittest.TestCase):
             self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
 
+    def test_to_dict_value(self):
+        """Checks if values in dict returned from to_dict are correct"""
+        text_format = "%Y-%m-%dT%H:%M:%S.%f"
+        us = User()
+        new_d = u.to_dict()
+        self.assertEqual(new_d["__class__"], "User")
+        self.assertEqual(type(new_d["created_at"]), str)
+        self.assertEqual(type(new_d["updated_at"]), str)
+        self.assertEqual(new_d["created_at\
+        "], us.created_at.strftime(text_format))
+        self.assertEqual(new_d["updated_at\
+        "], us.updated_at.strftime(text_format))
+
 
 if __name__ == "__main__":
     unittest.main()
