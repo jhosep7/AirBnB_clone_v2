@@ -9,7 +9,6 @@ import pep8
 
 class TestState(unittest.TestCase):
     """this will test the State class"""
-
     @classmethod
     def setUpClass(cls):
         """set up for test"""
@@ -17,7 +16,7 @@ class TestState(unittest.TestCase):
         cls.state.name = "CA"
 
     @classmethod
-    def tearDownClass(cls):
+    def teardown(cls):
         """at the end of the test this will tear it down"""
         del cls.state
 
@@ -53,10 +52,12 @@ class TestState(unittest.TestCase):
         """test attribute type for State"""
         self.assertEqual(type(self.state.name), str)
 
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "This test only work in Filestorage")
     def test_save_State(self):
         """test if the save works"""
-        return True
-        cls.state.save()
+        self.state.save()
         self.assertNotEqual(self.state.created_at, self.state.updated_at)
 
     def test_to_dict_State(self):

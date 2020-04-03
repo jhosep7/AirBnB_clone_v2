@@ -5,12 +5,10 @@ import os
 from models.amenity import Amenity
 from models.base_model import BaseModel
 import pep8
-from os import getenv
 
 
 class TestAmenity(unittest.TestCase):
     """this will test the Amenity class"""
-
     @classmethod
     def setUpClass(cls):
         """set up for test"""
@@ -54,18 +52,11 @@ class TestAmenity(unittest.TestCase):
         """test attribute type for Amenity"""
         self.assertEqual(type(self.amenity.name), str)
 
-    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") == "db",
-                     "Using DB")
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "This test only work in Filestorage")
     def test_save_Amenity(self):
         """test if the save works"""
-        self.amenity.save()
-        self.assertNotEqual(self.amenity.created_at, self.amenity.updated_at)
-
-    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != "db",
-                     "NOT Using DB")
-    def test_save_Amenity_db(self):
-        """test if the save works"""
-        return True
         self.amenity.save()
         self.assertNotEqual(self.amenity.created_at, self.amenity.updated_at)
 

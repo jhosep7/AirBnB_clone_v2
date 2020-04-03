@@ -5,12 +5,10 @@ import os
 from models.review import Review
 from models.base_model import BaseModel
 import pep8
-from os import getenv
 
 
 class TestReview(unittest.TestCase):
     """this will test the place class"""
-
     @classmethod
     def setUpClass(cls):
         """set up for test"""
@@ -60,18 +58,11 @@ class TestReview(unittest.TestCase):
         self.assertEqual(type(self.rev.place_id), str)
         self.assertEqual(type(self.rev.user_id), str)
 
-    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") == "db",
-                     "Not using db")
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "This test only work in Filestorage")
     def test_save_Review(self):
         """test if the save works"""
-        self.rev.save()
-        self.assertNotEqual(self.rev.created_at, self.rev.updated_at)
-
-    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != "db",
-                     "Using db")
-    def test_save_Review_db(self):
-        """test if the save works DB"""
-        return True
         self.rev.save()
         self.assertNotEqual(self.rev.created_at, self.rev.updated_at)
 
