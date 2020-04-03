@@ -92,6 +92,14 @@ class TestUser(unittest.TestCase):
         self.assertEqual(new_d["updated_at\
         "], us.updated_at.strftime(text_format))
 
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
+                     "Testing database storage")
+    def test_password_attr(self):
+        """Checks User has attr password and it is an empty string"""
+        user = User()
+        self.assertTrue(hasattr(user, "password"))
+        self.assertEqual(user.password, "")
+
 
 if __name__ == "__main__":
     unittest.main()

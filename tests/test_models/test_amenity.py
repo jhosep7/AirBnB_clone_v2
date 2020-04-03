@@ -11,6 +11,7 @@ from models.base_model import BaseModel
 import models
 import pep8
 
+
 class TestAmenity(unittest.TestCase):
     """this will test the Amenity class"""
 
@@ -166,10 +167,6 @@ class TestAmenity(unittest.TestCase):
     def test_to_dict_Amenity(self):
         """test if dictionary works"""
         self.assertEqual('to_dict' in dir(self.amenity), True)
-
-
-if __name__ == "__main__":
-    unittest.main(
 
 
 if __name__ == "__main__":
