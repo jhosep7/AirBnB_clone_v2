@@ -1,15 +1,11 @@
 #!/usr/bin/python3
 """test for city"""
 import unittest
-import pep8
 import os
-from models.base_model import BaseModel
 from models.city import City
-from models.place import Place
-from models.amenity import Amenity
-from models.state import State
-from models.review import Review
-import models
+from models.base_model import BaseModel
+import pep8
+from os import getenv
 
 
 class TestCity(unittest.TestCase):
@@ -18,14 +14,24 @@ class TestCity(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """set up for test"""
+
+        from models.state import State
+        cls.state = State()
+        cls.state.name = "California"
+        cls.state.save()
         cls.city = City()
         cls.city.name = "LA"
-        cls.city.state_id = "CA"
+        cls.city.state_id = cls.state.id
 
     @classmethod
-    def teardown(cls):
+    def tearDownClass(cls):
         """at the end of the test this will tear it down"""
+        from models import storage
+
+        storage.delete(cls.city)
+        storage.delete(cls.state)
         del cls.city
+        del cls.state
 
     def tearDown(self):
         """teardown"""
@@ -70,26 +76,6 @@ class TestCity(unittest.TestCase):
         """test if dictionary works"""
         self.assertEqual('to_dict' in dir(self.city), True)
 
-    def test_relation_db(self):
-        """ Check relation """
-        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            my_state = State(name="California")
-            my_state.save()
-            city = City(name="Arizona", state_id=my_state.id)
-            city.save()
-            self.assertTrue(city.state == my_state)
-
-    def test_create_db(self):
-        """ check create obj"""
-        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            value_a = len(models.storage.all("City"))
-            my_state = State(name="California")
-            my_state.save()
-            my_city = City(name="Arizona", state_id=my_state.id)
-            my_city.save()
-            self.assertEqual(value_a + 1, len(models.storage.all("City")))
-            models.storage.delete(my_city)
-            self.assertEqual(value_a, len(models.storage.all("City")))
 
 if __name__ == "__main__":
     unittest.main()
