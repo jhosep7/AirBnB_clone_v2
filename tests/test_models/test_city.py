@@ -79,5 +79,17 @@ class TestCity(unittest.TestCase):
             city.save()
             self.assertTrue(city.state == my_state)
 
+    def test_create_db(self):
+        """ check create obj"""
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            value_a = len(models.storage.all("City"))
+            my_state = State(name="California")
+            my_state.save()
+            my_city = City(name="Arizona", state_id=my_state.id)
+            my_city.save()
+            self.assertEqual(value_a + 1, len(models.storage.all("City")))
+            models.storage.delete(my_city)
+            self.assertEqual(value_a, len(models.storage.all("City")))
+
 if __name__ == "__main__":
     unittest.main()
