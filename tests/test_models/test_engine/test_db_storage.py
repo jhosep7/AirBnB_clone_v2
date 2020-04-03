@@ -16,4 +16,12 @@ from models.engine.file_storage import FileStorage
 import MySQLdb
 
 
-@
+class TestDBStorage(unittest.TestCase):
+    '''Testing the DBStorage'''
+
+    def test_pep8_conformance_db_storage(self):
+        """Test that models/engine/db_storage.py has correct PEP8 style."""
+        pep8st = pep8.StyleGuide(quiet=True)
+        result = pep8st.check_files(['models/engine/db_storage.py'])
+        self.assertEqual(result.total_errors, 0,
+                         "There are code style errors.")
