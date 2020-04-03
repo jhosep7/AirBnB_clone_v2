@@ -1,10 +1,15 @@
 #!/usr/bin/python3
 """test for city"""
 import unittest
-import os
-from models.city import City
-from models.base_model import BaseModel
 import pep8
+import os
+from models.base_model import BaseModel
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.state import State
+from models.review import Review
+import models
 
 
 class TestCity(unittest.TestCase):
@@ -65,6 +70,14 @@ class TestCity(unittest.TestCase):
         """test if dictionary works"""
         self.assertEqual('to_dict' in dir(self.city), True)
 
+    def test_relation_db(self):
+        """ Check relation """
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            my_state = State(name="California")
+            my_state.save()
+            city = City(name="Arizona", state_id=my_state.id)
+            city.save()
+            self.assertTrue(city.state == my_state)
 
 if __name__ == "__main__":
     unittest.main()
