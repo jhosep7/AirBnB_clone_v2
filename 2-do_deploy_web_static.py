@@ -8,22 +8,35 @@ env.hosts = ["35.227.16.88", "54.144.228.69"]
 env.user = "ubuntu"
 
 
+def do_pack():
+    """ Builds tar """
+    name = "versions/web_static_{}.tgz"
+    name = name.format(datetime.now().strftime("%Y%m%d%H%M%S"))
+    local("mkdir -p versions")
+    create = local("tar -cvzf {} web_static".format(name))
+    if create.succeeded:
+        return name
+    else:
+        return None
+
+
 def do_deploy(archive_path):
-    """ Deploys to servers"""
+    """ Full Deploy to servers"""
     if not os.path.exists(archive_path):
         return False
-    MyArr = []
-    MyFacts = put(archive_path, "/tmp")
-    MyArr.append(MyFacts.succeeded)
-    filename = os.path.filename(archive_path)
-    if filename[-4:] == ".tgz":
-        name = filename[:-4]
-    DirNew = "/data/web_static/releases/" + name
-    run("mkdir -p " + DirNew)
-    run("tar -xzf /tmp/" + filename + " -C " + DirNew)
-    run("rm /tmp/" + filename)
-    run("mv " + DirNew + "/web_static/* " + DirNew)
-    run("rm -rf " + DirNew + "/web_static")
+    Complete = []
+    Ans = put(archive_path, "/tmp")
+    Complete.append(Ans.succeeded)
+    basename = os.path.basename(archive_path)
+    if basename[-4:] == ".tgz":
+        name = basename[:-4]
+    newdir = "/data/web_static/releases/" + name
+    run("mkdir -p " + newdir)
+    run("tar -xzf /tmp/" + basename + " -C " + newdir)
+
+    run("rm /tmp/" + basename)
+    run("mv " + newdir + "/web_static/* " + newdir)
+    run("rm -rf " + newdir + "/web_static")
     run("rm -rf /data/web_static/current")
-    run("ln -s " + DirNew + " /data/web_static/current")
+    run("ln -s " + newdir + " /data/web_static/current")
     return True
