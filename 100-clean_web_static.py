@@ -5,9 +5,9 @@ from fabric.api import *
 import tarfile
 import os
 
-
 env.hosts = ["35.227.16.88", "54.144.228.69"]
 env.user = "ubuntu"
+
 
 def do_clean(number=0):
     """ Deletes """
