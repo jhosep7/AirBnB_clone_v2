@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Full Deployment """
+from fabric.operations import local, run, put, env
 from fabric.api import *
 import os
 from datetime import datetime
@@ -9,45 +10,43 @@ env.hosts = ["35.227.16.88", "54.144.228.69"]
 env.user = "ubuntu"
 
 
+def deploy():
+    """ Calls stuff to deploy"""
+    deployPack = do_pack()
+    if not deployPack:
+        return False
+    return do_deploy(deployPack)
+
+
 def do_pack():
-    """ compress web-static into a .tgz """
-    DirSave = "versions/"
-    NameF = "web_static_" + datetime.now().strftime("%Y%m%d%H%M%S") + ".tgz"
-    if not os.path.exists(DirSave):
-        os.mkdir(DirSave)
-    with tarfile.open(DirSave + NameF, "w:gz") as tar:
-        tar.add("web_static", arcname=os.path.basename("web_static"))
-    if os.path.exists(DirSave + NameF):
-        return DirSave + NameF
+    """ Builds tar """
+    name = "versions/web_static_{}.tgz"
+    name = name.format(datetime.now().strftime("%Y%m%d%H%M%S"))
+    local("mkdir -p versions")
+    create = local("tar -cvzf {} web_static".format(name))
+    if create.succeeded:
+        return name
     else:
         return None
 
+
 def do_deploy(archive_path):
-    """ It Deploys to  both servers"""
+    """ Full Deploy to servers"""
     if not os.path.exists(archive_path):
         return False
-    MyArr = []
-    MyFacts = put(archive_path, "/tmp")
-    MyArr.append(MyFacts.succeeded)
-    filename = os.path.filename(archive_path)
-    if filename[-4:] == ".tgz":
-        name = filename[:-4]
-    DirNew = "/data/web_static/releases/" + name
-    run("mkdir -p " + DirNew)
-    run("tar -xzf /tmp/" + filename + " -C " + DirNew)
-    run("rm /tmp/" + filename)
-    run("mv " + DirNew + "/web_static/* " + DirNew)
-    run("rm -rf " + DirNew + "/web_static")
+    Complete = []
+    Ans = put(archive_path, "/tmp")
+    Complete.append(Ans.succeeded)
+    basename = os.path.basename(archive_path)
+    if basename[-4:] == ".tgz":
+        name = basename[:-4]
+    newdir = "/data/web_static/releases/" + name
+    run("mkdir -p " + newdir)
+    run("tar -xzf /tmp/" + basename + " -C " + newdir)
+
+    run("rm /tmp/" + basename)
+    run("mv " + newdir + "/web_static/* " + newdir)
+    run("rm -rf " + newdir + "/web_static")
     run("rm -rf /data/web_static/current")
-    run("ln -s " + DirNew + " /data/web_static/current")
+    run("ln -s " + newdir + " /data/web_static/current")
     return True
-
-def deploy():
-    """ Calls stuff to deploy"""
-    tar = do_pack()
-    if tar is False:
-        return False
-    return do_deploy(tar)
-
-if __name__ == "__main__":
-    deploy()

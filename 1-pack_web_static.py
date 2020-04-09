@@ -9,17 +9,12 @@ import tarfile
 
 
 def do_pack():
-    """ compress web-static into a .tgz """
-    DirSave = "versions/"
-    NameF = "web_static_" + datetime.now().strftime("%Y%m%d%H%M%S") + ".tgz"
-    if not os.path.exists(DirSave):
-        os.mkdir(DirSave)
-    with tarfile.open(DirSave + NameF, "w:gz") as tar:
-        tar.add("web_static", arcname=os.path.basename("web_static"))
-    if os.path.exists(DirSave + NameF):
-        return DirSave + NameF
+    """ Builds tar """
+    name = "versions/web_static_{}.tgz"
+    name = name.format(datetime.now().strftime("%Y%m%d%H%M%S"))
+    local("mkdir -p versions")
+    create = local("tar -cvzf {} web_static".format(name))
+    if create.succeeded:
+        return name
     else:
         return None
-
-if __name__ == "__main__":
-    do_pack()

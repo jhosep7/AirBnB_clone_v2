@@ -9,7 +9,7 @@ env.user = "ubuntu"
 
 
 def do_deploy(archive_path):
-    """ It Deploys archive to  both servers"""
+    """ Deploys to servers"""
     if not os.path.exists(archive_path):
         return False
     MyArr = []
