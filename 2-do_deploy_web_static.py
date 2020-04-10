@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Deploy AirBnB2"""
-
+from fabric.operations import local, run, put, env
+from datetime import datetime
 from fabric.api import *
 import os
 

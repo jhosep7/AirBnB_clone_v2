@@ -43,7 +43,6 @@ def do_deploy(archive_path):
     newdir = "/data/web_static/releases/" + name
     run("mkdir -p " + newdir)
     run("tar -xzf /tmp/" + basename + " -C " + newdir)
-
     run("rm /tmp/" + basename)
     run("mv " + newdir + "/web_static/* " + newdir)
     run("rm -rf " + newdir + "/web_static")
