@@ -68,6 +68,6 @@ class FileStorage:
         except FileNotFoundError:
             pass
 
-        def close(self):
-            """storage trace"""
-            self.reload()
+    def close(self):
+        """storage trace"""
+        self.reload()
