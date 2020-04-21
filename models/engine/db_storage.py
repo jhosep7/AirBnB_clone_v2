@@ -30,6 +30,13 @@ class DBStorage():
 
     def all(self, cls=None):
         """shows all the Obj"""
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.user import User
+        from models.review import Review
+        from models.place import Place
+        
         all_classes = [State, City, User, Place, Review, Amenity]
         Lines = []
         if cls:
@@ -60,10 +67,11 @@ class DBStorage():
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
         Base.metadata.create_all(self.__engine)
+
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
-        Sect1 = scoped_session(session_factory)
-        self.__session = Sect1()
+        Session = scoped_session(session_factory)
+        self.__session = Session()
 
     def close(self):
         """closes link of a storage"""
