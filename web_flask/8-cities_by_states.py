@@ -6,13 +6,13 @@ app = Flask(__name__)
 
 
 @app.teardown_appcontext
-def closedb(expt):
+def CloseDB(expt):
     """Close"""
     storage.close()
 
 
 @app.route('/cities_by_states', strict_slashes=False)
-def states_list():
+def states():
     """cities"""
     states = list(storage.all(State).values())
     states.sort(key=lambda state: state.name)

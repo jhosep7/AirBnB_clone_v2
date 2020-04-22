@@ -1,0 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+span {
+  vertical-align: middle;
+}
+
+.container {
+  margin: 30px auto;
+  max-width: 1000px;
+}
+
+body {
+  font-family: Circular,"Arial",Helvetica,Arial,sans-serif;
+  color: #484848;
+  font-size: 15px;
+}

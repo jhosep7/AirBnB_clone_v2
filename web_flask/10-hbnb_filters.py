@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ intializing flask APP """
 from flask import Flask, render_template
-from models import storage, State
+from models import storage, State, Amenity
 app = Flask(__name__)
 
 
@@ -10,13 +10,12 @@ def CloseDB(expt):
     """Close"""
     storage.close()
 
-
-@app.route('/states_list', strict_slashes=False)
-def states():
-    """cities"""
-    states = list(storage.all(State).values())
-    states.sort(key=lambda state: state.name)
-    return render_template('7-states_list.html', states=states)
+@app.route('/hbnb_filters', strict_slashes=False)
+def Filter():
+    """ Filters """
+    states = storage.all(State)
+    amenities = storage.all(Amenity)
+    return render_template('10-hbnb_filters.html', **locals())
 
 
 if __name__ == '__main__':
