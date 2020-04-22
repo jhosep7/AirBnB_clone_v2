@@ -9,15 +9,18 @@ def StartAPI():
     """ Start on port :5000 """
     return ("Hello HBNB!")
 
+
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
     """ Display /hbnb """
     return ("HBNB")
 
+
 @app.route('/c/<text>', strict_slashes=False)
 def CisFun(text):
     """ change _ for """
     return ("C {}".format(text.replace('_', ' ')))
+
 
 @app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)

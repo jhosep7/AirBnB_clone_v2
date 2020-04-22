@@ -10,6 +10,7 @@ def CloseDB(expt):
     """Close"""
     storage.close()
 
+
 @app.route('/hbnb_filters', strict_slashes=False)
 def Filter():
     """ Filters """

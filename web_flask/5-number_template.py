@@ -9,15 +9,18 @@ def StartAPI():
     """ Start on port :5000 """
     return ("Hello HBNB!")
 
+
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
     """ Display /hbnb """
     return ("HBNB")
 
+
 @app.route('/c/<text>', strict_slashes=False)
 def CisFun(text):
     """ change _ for """
     return ("C {}".format(text.replace('_', ' ')))
+
 
 @app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
@@ -25,10 +28,12 @@ def PythonIsCool(text="is cool"):
     """ change _ for """
     return ("Python {}".format(text.replace('_', ' ')))
 
+
 @app.route('/number/<int:n>', strict_slashes=False)
 def IfNumInt(n):
     """ Shows if num is int """
     return ("{:d} is a number".format(n))
+
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def number_template(n):
