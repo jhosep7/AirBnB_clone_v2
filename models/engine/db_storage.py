@@ -30,13 +30,6 @@ class DBStorage():
 
     def all(self, cls=None):
         """shows all the Obj"""
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.user import User
-        from models.review import Review
-        from models.place import Place
-        
         all_classes = [State, City, User, Place, Review, Amenity]
         Lines = []
         if cls:
